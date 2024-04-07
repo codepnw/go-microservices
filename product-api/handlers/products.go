@@ -2,6 +2,7 @@ package handlers
 
 import (
 	"context"
+	"fmt"
 	"log"
 	"net/http"
 	"strconv"
@@ -17,47 +18,6 @@ type Products struct {
 func NewProduct(l *log.Logger) *Products {
 	return &Products{l}
 }
-
-// func (p *Products) ServeHTTP(w http.ResponseWriter, r *http.Request) {
-// 	if r.Method == http.MethodGet {
-// 		p.getProducts(w, r)
-// 		return
-// 	}
-
-// 	if r.Method == http.MethodPost {
-// 		p.addProduct(w, r)
-// 		return
-// 	}
-
-// 	if r.Method == http.MethodPut {
-// 		reg := regexp.MustCompile(`/([0-9]+)`)
-// 		g := reg.FindAllStringSubmatch(r.URL.Path, -1)
-
-// 		if len(g) != 1 {
-// 			p.l.Println("Invalid URI more than one id")
-// 			http.Error(w, "invalid URI", http.StatusBadRequest)
-// 			return
-// 		}
-
-// 		if len(g[0]) != 2 {
-// 			p.l.Println("Invalid URI more than one capture group")
-// 			http.Error(w, "invalid URI", http.StatusBadRequest)
-// 			return
-// 		}
-
-// 		idString := g[0][1]
-// 		id, err := strconv.Atoi(idString)
-// 		if err != nil {
-// 			p.l.Println("Invalid URI unable to convert to numer", idString)
-// 			http.Error(w, "invalid URI", http.StatusBadRequest)
-// 			return
-// 		}
-
-// 		p.updateProducts(id, w, r)
-// 	}
-
-// 	w.WriteHeader(http.StatusMethodNotAllowed)
-// }
 
 func (p *Products) GetProducts(w http.ResponseWriter, _ *http.Request) {
 	lp := data.GetProducts()
@@ -116,7 +76,21 @@ func (p Products) MiddlewareProductValidation(next http.Handler) http.Handler {
 
 		err := prod.FromJSON(r.Body)
 		if err != nil {
-			http.Error(w, "Unable to unmarshal json", http.StatusBadRequest)
+			p.l.Println("[ERROR] deserializing product", err)
+			http.Error(w, "Error reading product", http.StatusBadRequest)
+			return
+		}
+
+		// validate the product
+		err = prod.Validate()
+		if err != nil {
+			p.l.Println("[ERROR] validate product", err)
+			http.Error(
+				w,
+				fmt.Sprintf("Error validating product: %s", err),
+				http.StatusBadRequest,
+			)
+			return
 		}
 
 		ctx := context.WithValue(r.Context(), KeyProduct{}, prod)
