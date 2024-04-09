@@ -38,6 +38,11 @@ func validateSKU(fl validator.FieldLevel) bool {
 	re := regexp.MustCompile(`[a-z]+-[a-z]+-[a-z]+`)
 	matchs := re.FindAllString(fl.Field().String(), -1)
 
+	// if len(matchs) != 1 {
+	// 	return false
+	// }
+
+	// return true
 	return len(matchs) == 1
 }
 
