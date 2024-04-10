@@ -1,6 +1,3 @@
-basePath: /
-consumes:
-    - application/json
 definitions:
     Product:
         properties:
@@ -23,10 +20,7 @@ definitions:
                 x-go-name: SKU
         type: object
         x-go-package: github.com/codepnw/microservices/api/data
-info:
-    description: Documentation for Product API
-    title: of Product API
-    version: 1.0.0
+info: {}
 paths:
     /products:
         get:
@@ -37,15 +31,45 @@ paths:
                     $ref: '#/responses/productsResponse'
             tags:
                 - products
-produces:
-    - application/json
+        post:
+            description: Create a new product
+            operationId: createProduct
+            responses:
+                "200":
+                    $ref: '#/responses/productResponse'
+            tags:
+                - products
+        put:
+            description: Update a products details
+            operationId: updateProduct
+            responses:
+                "201":
+                    $ref: '#/responses/noContentResponse'
+            tags:
+                - products
+    /products/{id}:
+        delete:
+            description: Return a list of products
+            operationId: deleteProduct
+            parameters:
+                - format: int64
+                  in: path
+                  name: id
+                  required: true
+                  type: integer
+                  x-go-name: ID
+            responses:
+                "201":
+                    $ref: '#/responses/noContent'
+            tags:
+                - products
 responses:
+    noContent:
+        description: ""
     productsResponse:
         description: ""
         schema:
             items:
                 $ref: '#/definitions/Product'
             type: array
-schemes:
-    - http
 swagger: "2.0"
