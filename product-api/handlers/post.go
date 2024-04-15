@@ -9,8 +9,7 @@ import (
 // swagger:route POST /products products createProduct
 // Create a new product
 // responses:
-//	200: productResponse
-
+//	200: productsResponse
 func (p *Products) AddProduct(w http.ResponseWriter, r *http.Request) {
 	prod := &data.Product{}
 

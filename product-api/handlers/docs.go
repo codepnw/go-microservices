@@ -1,4 +1,4 @@
-// Package classification of Product API
+// Package classification Product API
 //
 // Documentation for Product API
 //
@@ -13,7 +13,6 @@
 //	- application/json
 //
 // swagger:meta
-
 package handlers
 
 import "github.com/codepnw/microservices/api/data"
@@ -24,6 +23,12 @@ type productsResponseWrapper struct {
 	Body []data.Product
 }
 
+// swagger:response productResponse
+type productResponseWrapper struct {
+	// in:body
+	Body data.Product
+}
+
 // swagger:parameters deleteProduct
 type productIdParameterWrapper struct {
 	// in: path
@@ -31,5 +36,5 @@ type productIdParameterWrapper struct {
 	ID int `json:"id"`
 }
 
-// swagger:response noContent
-type productsNoContent struct{}
+// swagger:response noContentResponse
+type noContentResponseWrapper struct{}

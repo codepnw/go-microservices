@@ -10,7 +10,6 @@ import (
 // Return a list of products
 // responses:
 //	200:productsResponse
-
 func (p *Products) GetProducts(w http.ResponseWriter, _ *http.Request) {
 	lp := data.GetProducts()
 	err := lp.ToJSON(w)

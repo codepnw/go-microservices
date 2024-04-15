@@ -12,7 +12,6 @@ import (
 // Update a products details
 // responses:
 //	201: noContentResponse
-
 func (p Products) UpdateProducts(w http.ResponseWriter, r *http.Request) {
 	vars := mux.Vars(r)
 	id, err := strconv.Atoi(vars["id"])

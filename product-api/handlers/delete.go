@@ -9,8 +9,7 @@ import (
 // swagger:route DELETE /products/{id} products deleteProduct
 // Return a list of products
 // responses:
-//	201: noContent
-
+//	201: noContentResponse
 func (p *Products) DeleteProduct(w http.ResponseWriter, r *http.Request) {
 	w.Header().Add("Content-Type", "application/json")
 	id := getProductID(r)
