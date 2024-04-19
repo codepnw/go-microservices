@@ -55,6 +55,8 @@ produces:
 responses:
     noContentResponse:
         description: ""
+    productResponse:
+        description: ""
     productsResponse:
         description: ""
         schema:
